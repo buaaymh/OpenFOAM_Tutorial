@@ -22,10 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    OF_Tutorial_01
+    OF_Tutorial_02
 
 Description
-    This is the OpenFOAM InfoTest tutorial from buaaymh.
+    This is the OpenFOAM DictionaryTest tutorial from buaaymh.
 
 \*---------------------------------------------------------------------------*/
 
@@ -37,12 +37,42 @@ int main(int argc, char *argv[])
 {
     // Initialise OF case
     #include "setRootCase.H"
+    #include "createTime.H"
+    #include "createMesh.H"
 
-    // Similar to std::cout, std::nl and std::endl in C++, you just need to
-    // replace them with Foam::Info, Foam::nl and Foam::endl(multi-processors).
-    Info << "Hello , OpenFOAM learner!" << nl
-		 << "You don't need a mesh or anything to run it, just a bare OpenFOAM case will do." << nl
-		 << tab << "this is to test the info demo." << nl << endl;
+    const word dictName("testProperties");
+
+    // Create and input-output object
+    IOobject yourDictObject
+    (
+        dictName, // name of the file
+        mesh.time().constant(), // path to where the file is
+        mesh, // reference to the mesh needed by the constructor
+        IOobject::MUST_READ // indicate that reading this dictionary is compulsory
+    );
+    // Initialise the dictionary object
+    dictionary testDict = IOdictionary(yourDictObject);
+
+    word outputWord;
+    testDict.lookup("myName") >> outputWord;
+
+    scalar gamma(testDict.lookupOrDefault<scalar>("gamma", 1.4));
+    scalar PI(testDict.lookupOrDefault<scalar>("PI", 3.1415));
+    bool yourBool(testDict.lookupOrDefault<Switch>("yourBool", true));
+    List<scalar> outputList (testDict.lookup("yourList"));
+    vector yourVector (testDict.lookupOrDefault<vector>("yourVector", vector::zero));
+    tensor yourTensor (testDict.lookupOrDefault<tensor>("yourTensor", tensor::zero));
+
+    Info << "What you got here:" << nl
+         << nl
+         << "myName: "         << outputWord << nl
+         << "gamma: "          << gamma << nl
+         << "PI: "             << PI << nl
+         << "yourBool: "       << yourBool << nl
+         << "yourList: "       << outputList << nl
+         << "yourVector: "     << yourVector << nl
+         << "yourTensor: "     << yourTensor << nl
+         << endl;
 
     Info<< "End\n" << endl;
 
