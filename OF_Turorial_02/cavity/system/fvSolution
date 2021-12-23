@@ -39,12 +39,12 @@ solvers
     }
 }
 
-PISO
+GMRES
 {
-    nCorrectors     2;
-    nNonOrthogonalCorrectors 0;
-    pRefCell        0;
-    pRefValue       0;
+    maxIter         20;
+    nKrylov         8;
+    tolerance       1e-6;
+    relTol          1e-4;
 }
 
 

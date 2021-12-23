@@ -22,13 +22,18 @@ ddtSchemes
 gradSchemes
 {
     default         Gauss linear;
-    grad(p)         Gauss linear;
+}
+
+vrSchemes
+{
+    nIter           8;
+    weightList      (1.0 2.0 3.0 4.0);
 }
 
 divSchemes
 {
     default         none;
-    div(phi,U)      Gauss linear;
+    flux            roe;
 }
 
 laplacianSchemes

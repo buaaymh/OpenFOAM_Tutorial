@@ -40,12 +40,10 @@ int main(int argc, char *argv[])
     #include "createTime.H"
     #include "createMesh.H"
 
-    const word dictName("testProperties");
-
     // Create and input-output object
     IOobject yourDictObject
     (
-        dictName, // name of the file
+        "fluidProperties", // name of the file
         mesh.time().constant(), // path to where the file is
         mesh, // reference to the mesh needed by the constructor
         IOobject::MUST_READ // indicate that reading this dictionary is compulsory
@@ -53,25 +51,71 @@ int main(int argc, char *argv[])
     // Initialise the dictionary object
     dictionary testDict = IOdictionary(yourDictObject);
 
-    word outputWord;
-    testDict.lookup("myName") >> outputWord;
+    word simulationType;
+    testDict.lookup("simulationType") >> simulationType;
 
     scalar gamma(testDict.lookupOrDefault<scalar>("gamma", 1.4));
-    scalar PI(testDict.lookupOrDefault<scalar>("PI", 3.1415));
-    bool yourBool(testDict.lookupOrDefault<Switch>("yourBool", true));
-    List<scalar> outputList (testDict.lookup("yourList"));
-    vector yourVector (testDict.lookupOrDefault<vector>("yourVector", vector::zero));
-    tensor yourTensor (testDict.lookupOrDefault<tensor>("yourTensor", tensor::zero));
+    scalar R(testDict.lookupOrDefault<scalar>("R", 0.0));
+    scalar PrDyna(testDict.lookupOrDefault<scalar>("PrDyna", 0.0));
+    scalar PrTurb(testDict.lookupOrDefault<scalar>("PrTurb", 0.0));
 
-    Info << "What you got here:" << nl
+    Info << "Gas information:" << nl
          << nl
-         << "myName: "         << outputWord << nl
-         << "gamma: "          << gamma << nl
-         << "PI: "             << PI << nl
-         << "yourBool: "       << yourBool << nl
-         << "yourList: "       << outputList << nl
-         << "yourVector: "     << yourVector << nl
-         << "yourTensor: "     << yourTensor << nl
+         << "simulationType: "  << simulationType << nl
+         << "gamma: "           << gamma << nl
+         << "R: "               << R << nl
+         << "PrDyna: "          << PrDyna << nl
+         << "PrTurb: "          << PrTurb << nl
+         << endl;
+
+    const dictionary& freeStream = testDict.subDict("freeStream");
+    vector refU    = freeStream.lookup<vector>("refU");
+    scalar refPres = freeStream.lookup<scalar>("refPres");
+    scalar refT    = freeStream.lookup<scalar>("refT");
+    scalar refVisc = freeStream.lookup<scalar>("refVisc");
+
+    Info << "Free stream information:" << nl
+         << nl
+         << "refPres: "  << refU << nl
+         << "refPres: "  << refPres << nl
+         << "refPres: "  << refT << nl
+         << "refPres: "  << refVisc << nl
+         << endl;
+
+    const dictionary& scheme = mesh.schemesDict();
+    label nIter = scheme.subDict("vrSchemes").lookupOrDefault<label>("nIter", 1);
+    List<scalar> weightList = scheme.subDict("vrSchemes").lookup<List<scalar>>("weightList");
+    word flux = scheme.subDict("divSchemes").lookupOrDefault<word>("flux", "roe");
+    Info << "Scheme information:" << nl
+         << nl
+         << "nIter: "       << nIter << nl
+         << "weightList: "  << weightList << nl
+         << "flux: "        << flux << nl
+         << endl;
+
+    const dictionary& solution = mesh.solutionDict();
+    label maxIter = solution.subDict("GMRES").lookupOrDefault<label>("maxIter", 10);
+    label nKrylov = solution.subDict("GMRES").lookupOrDefault<label>("nKrylov", 10);
+    scalar tolerance = solution.subDict("GMRES").lookupOrDefault<scalar>("tolerance", 1e-2);
+    scalar relTol = solution.subDict("GMRES").lookupOrDefault<scalar>("relTol", 1e-2);
+    Info << "Solution information:" << nl
+         << nl
+         << "maxIter: "   << maxIter << nl
+         << "nKrylov: "   << nKrylov << nl
+         << "tolerance: " << tolerance << nl
+         << "relTol: "    << relTol << nl
+         << endl;
+
+    scalar startTime = runTime.controlDict().lookupOrDefault<scalar>("startTime", 1.0);
+    scalar endTime = runTime.controlDict().lookupOrDefault<scalar>("endTime", 1.0);
+    scalar deltaT = runTime.controlDict().lookupOrDefault<scalar>("deltaT", 1.0);
+    scalar maxCo = runTime.controlDict().lookupOrDefault<scalar>("maxCo", 1.0);
+    Info << "Time information:" << nl
+         << nl
+         << "startTime: "   << startTime << nl
+         << "endTime: "     << endTime << nl
+         << "deltaT: "      << deltaT << nl
+         << "maxCo: "       << maxCo << nl
          << endl;
 
     Info<< "End\n" << endl;

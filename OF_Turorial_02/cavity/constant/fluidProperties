@@ -10,21 +10,26 @@ FoamFile
     format      ascii;
     class       dictionary;
     location    "constant";
-    object      trestProperties;
+    object      fluidProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-myName      buaaymh;
+simulationType  RANS;
 
-gamma       1.4;
+gamma           1.4;
 
-yourBool    on;
+R               287.058;
 
-yourList    (1.0 2.0 3.0 4.0);
+PrDyna          0.72;
 
-yourVector  (1.1  2.2  3.3);
+PrTurb          0.9;
 
-yourTensor  (1 2 3 4 5 6 7 8 9);
-
+freeStream
+{
+    refU           (0  0  0);
+    refPres        1;
+    refT           288.15;
+    refVisc        1.78e-5;
+}
 
 // ************************************************************************* //

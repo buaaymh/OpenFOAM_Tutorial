@@ -45,13 +45,14 @@ int main(int argc, char *argv[])
          << nl << endl;
 
     for (label cellI = 0; cellI < mesh.C().size(); cellI++)
-        if (cellI == 50)
+        if (cellI%1 == 0)
             Info << " Number " << cellI << " cell with the center point at " << mesh.C()[cellI] << nl
-                 << " and it has faces : "  << mesh.cells()[cellI] << nl
-                 << " and it has points : " << mesh.cellPoints()[cellI] << nl << endl;
+                << " and it has cells : "  << mesh.cellCells()[cellI] << nl
+                << " and it has faces : "  << mesh.cells()[cellI] << nl
+                << " and it has points : " << mesh.cellPoints()[cellI] << nl << endl;
 
     for (label faceI = 0; faceI < mesh.Cf().size(); faceI++)
-        if (faceI%300 == 0)
+        if (faceI%5 == 0)
             Info << " The internal face Number " << faceI << " with the center point at " << mesh.Cf()[faceI] << nl
                  << " with the owner face Number " << mesh.owner()[faceI] << nl
                  << " with the neighbour face Number " << mesh.neighbour()[faceI] << nl
