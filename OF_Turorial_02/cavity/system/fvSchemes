@@ -14,11 +14,6 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-ddtSchemes
-{
-    default         Euler;
-}
-
 gradSchemes
 {
     default         Gauss linear;
@@ -38,17 +33,7 @@ divSchemes
 
 laplacianSchemes
 {
-    default         Gauss linear orthogonal;
-}
-
-interpolationSchemes
-{
-    default         linear;
-}
-
-snGradSchemes
-{
-    default         orthogonal;
+    default         none;
 }
 
 
