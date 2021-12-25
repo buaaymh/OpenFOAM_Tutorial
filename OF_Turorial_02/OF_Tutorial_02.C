@@ -40,16 +40,17 @@ int main(int argc, char *argv[])
     #include "createTime.H"
     #include "createMesh.H"
 
-    // Create and input-output object
-    IOobject yourDictObject
-    (
-        "fluidProperties", // name of the file
-        mesh.time().constant(), // path to where the file is
-        mesh, // reference to the mesh needed by the constructor
-        IOobject::MUST_READ // indicate that reading this dictionary is compulsory
-    );
-    // Initialise the dictionary object
-    dictionary testDict = IOdictionary(yourDictObject);
+     // Initialise the dictionary object
+     IOdictionary testDict
+     (
+          IOobject
+          (
+               "fluidProperties", // name of the file
+               mesh.time().constant(), // path to where the file is
+               mesh, // reference to the mesh needed by the constructor
+               IOobject::MUST_READ // indicate that reading this dictionary is compulsory
+          )
+     );
 
     word simulationType;
     testDict.lookup("simulationType") >> simulationType;

@@ -1,0 +1,35 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      fluidProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType  RANS;
+
+gamma           1.4;
+
+R               287.058;
+
+PrDyna          0.72;
+
+PrTurb          0.9;
+
+freeStream
+{
+    refU           (0  0  0);
+    refPres        1;
+    refT           288.15;
+    refVisc        1.78e-5;
+}
+
+// ************************************************************************* //
