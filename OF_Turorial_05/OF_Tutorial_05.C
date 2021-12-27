@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    OF_Tutorial_02
+    OF_Tutorial_04
 
 Description
     This is the OpenFOAM FieldTest tutorial from buaaymh.

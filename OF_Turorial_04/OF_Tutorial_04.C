@@ -22,10 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    OF_Tutorial_01
+    OF_Tutorial_04
 
 Description
-    This is the OpenFOAM InfoTest tutorial from buaaymh.
+    This is the OpenFOAM PrimtiveTypesTest tutorial from buaaymh.
 
 \*---------------------------------------------------------------------------*/
 

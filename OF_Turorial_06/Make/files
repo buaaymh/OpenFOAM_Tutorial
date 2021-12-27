@@ -1,0 +1,3 @@
+OF_Tutorial_06.C
+
+EXE = $(FOAM_USER_APPBIN)/OF_Tutorial_06
