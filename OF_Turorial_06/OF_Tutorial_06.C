@@ -104,6 +104,39 @@ int main(int argc, char *argv[])
                
      }
 
+     volScalarField p // note that pressure is a scalar field
+	(
+		IOobject
+		(
+		    "p", // name of the field
+		    runTime.timeName(), // name of the current time, i.e. the time folder to read from
+		    mesh,
+		    IOobject::MUST_READ, // always gets imported, will throw an error if the field is missing
+		    IOobject::AUTO_WRITE // will get saved automatically when the controlDict parameters will request it
+		),
+		mesh // initialises the field to match the size of the mesh with default (0) values
+	);
+
+     runTime++;
+     forAll(p, iCell)
+          p[iCell] = Pstream::myProcNo();
+     runTime.write();
+     
+     runTime++;
+     p.correctBoundaryConditions();
+     forAll(mesh.boundary(), patchI)
+     {
+          if(mesh.boundary()[patchI].coupled())
+          {
+               const UList<label>& bfaceCells = mesh.boundary()[patchI].faceCells();
+               const scalarField neig = p.boundaryField()[patchI].patchNeighbourField();
+               forAll(bfaceCells, faceI)
+                    p[bfaceCells[faceI]] = neig[faceI];
+               Pout << "Processor" << Pstream::myProcNo() << " has exchanged!" << endl;
+          }
+     }
+     runTime.write();
+
      Info<< "\nEnd\n" << endl;
 
      return 0;
