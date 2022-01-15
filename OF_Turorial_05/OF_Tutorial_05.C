@@ -71,17 +71,17 @@ int main(int argc, char *argv[])
      Info<< "\nStarting time loop\n" << endl;
      while (runTime.loop())
      {
-          Info<< "Time = " << runTime.timeName() << nl << endl;
-          for (label cellI=0; cellI<mesh.C().size(); cellI++)
-		{
-               const vector& center = mesh.C()[cellI];
-               p[cellI] = Foam::sin(2*Foam::constant::mathematical::pi*
-                                    center.x());
-          }
-          p.correctBoundaryConditions();
-          U = fvc::grad(p)*dimensionedScalar("tmp",dimTime,1.);
-          U.correctBoundaryConditions();
-          runTime.write();
+        Info<< "Time = " << runTime.timeName() << nl << endl;
+        for (label cellI=0; cellI<mesh.C().size(); cellI++)
+        {
+            const vector& center = mesh.C()[cellI];
+            p[cellI] = Foam::sin(2*Foam::constant::mathematical::pi*
+                                center.x());
+        }
+        p.correctBoundaryConditions();
+        U = fvc::grad(p)*dimensionedScalar("tmp",dimTime,1.);
+        U.correctBoundaryConditions();
+        runTime.write();
      }
 
      Info<< "End\n" << endl;

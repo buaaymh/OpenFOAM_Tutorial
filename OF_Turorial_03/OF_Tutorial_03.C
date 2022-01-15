@@ -59,15 +59,28 @@ int main(int argc, char *argv[])
                  << " and it has points : " << mesh.faces()[faceI] << nl
                  << endl;
 
-    forAll(mesh.boundaryMesh(), patchI)
+    forAll(mesh.boundary(), patchI)
         Info << "Patch " << patchI << ": " << mesh.boundary()[patchI].name()
              << " is " << "\"" << mesh.boundary()[patchI].type() << "\"" << " and has "
              << mesh.boundary()[patchI].Cf().size() << " faces. Starts at total face "
              << mesh.boundary()[patchI].start() << endl;
     Info << endl;
 
+    label patchID = mesh.boundary().findPatchID("movingWall");
+    const fvPatch& patch = mesh.boundary()[patchID];
+    const UList<label>& bfaceCells = patch.faceCells();
+    const vectorField& Cf = patch.Cf();
+    const scalarField& area = patch.magSf();
+    Info << "Patch" << "[" << patchID << "] movingWall has :" << endl;
+    forAll(patch, faceI)
+    {
+        Info << "Face" << faceI  << " Cf:" << Cf[faceI] << " area:" << area[faceI]
+             << " has cell" << bfaceCells[faceI] << endl; 
+    }
+    Info << endl;
+
     word findAPatch("frontAndBack");
-    label patchID = mesh.boundaryMesh().findPatchID(findAPatch);
+    patchID = mesh.boundary().findPatchID(findAPatch);
     const polyPatch& pp = mesh.boundaryMesh()[patchID];
     if (isA<emptyPolyPatch>(pp))
     {
